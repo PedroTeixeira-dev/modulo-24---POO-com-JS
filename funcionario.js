@@ -1,20 +1,19 @@
-function Pessoa(nome, sobrenome) {
+function Pessoa(nome) {
     this.nome = nome
-    this.sobrenome = sobrenome
 
     this.dizOi = function() {
         console.log(this.nome + " diz oi")
     }
 }
 
-function Funcionario(nome, sobrenome, cargo, salario){
+function Funcionario(nome, cargo, salario){
     this.cargo = cargo
     //this.salario = salario
 
     let _salario = salario
 
     this.getSalario = function(){
-        return `O salario de ${this.nome} e ${_salario}`
+        return _salario
     }
 
     this.setSalario = function(valor) {
@@ -27,20 +26,48 @@ function Funcionario(nome, sobrenome, cargo, salario){
 
     }
 
-    Pessoa.call(this, nome, sobrenome)
+    this.aumento = function(){
+        const novoSalario = _salario * 1.1
+        _salario = novoSalario
+    }
+
+    Pessoa.call(this, nome)
+}
+
+function Estagiario(nome) {
+    Funcionario.call(this, nome, "Estagiario", 2000)
+
+    this.aumento = function(){
+        const novoSalario = this.getSalario() * 1.07
+        this.setSalario(novoSalario)
+    }
+}
+
+function Gerente(nome) {
+    Funcionario.call(this, nome, "Gerente", 10000)
+
+    this.aumento = function(){
+        const novoSalario = this.getSalario() * 1.15
+        this.setSalario(novoSalario)
+    }
 }
 
 
-const pessoa1 = new Pessoa("Pedro", "Teixeira")
+const pessoa1 = new Pessoa("Pedro")
 
-const funcionario1 = new Funcionario(pessoa1.nome, pessoa1.sobrenome,  "dev front-end", 5000)
+const funcionario1 = new Funcionario(pessoa1.nome, "dev front-end", 5000)
+const funcionario2 = new Estagiario("Joao")
+const funcionario3 = new Gerente("Maria")
 
-funcionario1.dizOi()
 
-console.log(pessoa1)
-console.log(funcionario1)
-
-funcionario1.setSalario(7000)
+funcionario1.aumento()
 
 console.log(funcionario1.getSalario())
 
+funcionario2.aumento()
+
+console.log(funcionario2.getSalario())
+
+funcionario3.aumento()
+
+console.log(funcionario3.getSalario())
